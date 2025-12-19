@@ -1,56 +1,25 @@
 # AI-Powered 3D Reconstruction System
-## Cross-Platform Single-Image 3D Object Reconstruction Using LRM and TripoSR
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
-[![Flask](https://img.shields.io/badge/Flask-3.0+-green.svg)](https://flask.palletsprojects.com/)
+**Cross-Platform Single-Image 3D Object Reconstruction Using LRM and TripoSR**
+
+Transform 2D images into complete 3D models using state-of-the-art AI.
 
 ---
 
-## 📋 Quick Navigation
+## 📋 Table of Contents
 
-- [Overview](#-overview)
-- [Features](#-features)  
-- [Installation](#-installation)
-- [Usage](#-usage)
+- [Quick Start](#-quick-start)
 - [Complete Deep Dive](#complete-deep-dive-3d-reconstruction-system)
-  - [Part 1: System Architecture](#part-1-system-architecture--core-technologies)
-  - [Part 2: Flask Application](#part-2-flask-application-deep-dive)
-  - [Part 3: Background Processing](#part-3-background-processing--ai-pipeline)
-  - [Part 4: 3D Viewer & API](#part-4-server-sent-events-3d-viewer--api-architecture)
+  - [Part 1: System Architecture & Core Technologies](#part-1-system-architecture--core-technologies)
+  - [Part 2: Flask Application Deep Dive](#part-2-flask-application-deep-dive)
+  - [Part 3: Background Processing & AI Pipeline](#part-3-background-processing--ai-pipeline)
+  - [Part 4: Server-Sent Events, 3D Viewer & API](#part-4-server-sent-events-3d-viewer--api-architecture)
 
 ---
 
-## 🎯 Overview
+## 🚀 Quick Start
 
-This is an **AI-powered 3D reconstruction application** that converts a single 2D image into a complete 3D model using deep learning, computer vision, and 3D graphics rendering.
-
-**Input:** Single 2D photo (e.g., chair.jpg)
-
-**Output:**
-- `mesh.obj` - 3D geometry file
-- `mesh.stl` - 3D printing format
-- `mesh.mtl` - Material definition
-- `mesh_texture.png` - Texture map
-- `render.mp4` - 360° rotation video
-- 30 individual render frames
-
----
-
-## ✨ Features
-
-- 🤖 **AI-Powered** - TripoSR transformer-based neural network
-- 🎨 **Auto Background Removal** - U²-Net segmentation
-- 📹 **360° Video** - Automatic rotation animation
-- 🖼️ **Interactive Viewer** - WebGL-based 3D visualization
-- 📦 **Multiple Formats** - OBJ, STL, MTL exports
-- ⚡ **GPU Accelerated** - CUDA support for 10x speedup
-- 🔄 **Real-time Progress** - Server-Sent Events streaming
-
----
-
-## 📦 Installation
+### Installation
 
 ```bash
 # Clone repository
@@ -64,29 +33,12 @@ pip install -r requirements.txt
 python app.py
 ```
 
-**Access:** `http://localhost:5000`
+### Usage
 
----
-
-## 🎮 Usage
-
-### Web Interface
-1. Upload image (drag & drop or browse)
-2. Watch real-time progress updates
-3. View interactive 3D model
-4. Download files (OBJ/STL/MP4)
-
-### Command Line
-```bash
-python run.py input.jpg --device cuda --output ./output
-```
-
-### Python API
-```python
-from tsr.system import TSR
-model = TSR.from_pretrained("stabilityai/TripoSR")
-mesh = model.extract_mesh(scene_codes)[0]
-```
+1. Open `http://localhost:5000` in your browser
+2. Upload a 2D image (JPG/PNG)
+3. Wait for AI processing (10-120 seconds)
+4. Download 3D files (OBJ/STL/MP4)
 
 ---
 
@@ -282,81 +234,82 @@ This is an **AI-powered 3D reconstruction application** that converts a single 2
 
 ## Part 2: Flask Application Deep Dive
 
-This section covers the Flask web framework fundamentals and how the application handles HTTP requests, manages sessions, and coordinates background processing.
-
-### Key Concepts
-- WSGI (Web Server Gateway Interface)
-- Request/Response handling
-- Session management with encrypted cookies
-- Background threading for non-blocking processing
-- Server-Sent Events (SSE) for real-time updates
+This section explains how the Flask web server handles HTTP requests, manages sessions, and coordinates the background processing pipeline through routing, threading, and Server-Sent Events for real-time progress updates.
 
 ---
 
 ## Part 3: Background Processing & AI Pipeline
 
-This section details the complete image processing pipeline from upload to 3D model generation.
-
-### Pipeline Stages
-1. **Image Loading & Preprocessing** - Resize to 512×512
-2. **Background Removal** - U²-Net neural network
-3. **AI Model Inference** - TripoSR transformer
-4. **3D Rendering** - NeRF-style volume rendering
-5. **Mesh Extraction** - Marching Cubes algorithm (256³ grid)
-6. **Texture Baking** - UV unwrapping with xatlas
-7. **File Export** - OBJ, STL, MTL, PNG, MP4
+This section details the complete image processing pipeline from upload to 3D model generation, including:
+- Image preprocessing (background removal, resizing, RGBA→RGB conversion)
+- TSR model inference (image tokenization, transformer processing, triplane generation)
+- 3D rendering (NeRF-style volume rendering, 30 camera views)
+- Mesh extraction (Marching Cubes algorithm on 256³ grid)
+- Texture baking (UV unwrapping, rasterization)
+- File export (OBJ, STL, MTL, PNG, MP4 formats)
 
 ---
 
 ## Part 4: Server-Sent Events, 3D Viewer & API Architecture
 
-This section covers real-time communication and 3D visualization.
-
-### Technologies
-- **Server-Sent Events (SSE)** - One-way server→client streaming
-- **Three.js** - WebGL-based 3D rendering
-- **OrbitControls** - Interactive camera manipulation
-- **REST API** - Programmatic access to all features
+This section covers:
+- Server-Sent Events (SSE) implementation for real-time progress streaming
+- Three.js 3D viewer setup with OrbitControls
+- Camera and lighting configuration
+- OBJ/MTL model loading with texture support
+- REST API endpoints for programmatic access
 
 ---
 
-## 🔌 API Reference
+## 📚 Complete Technical Documentation
 
-### Endpoints
+For the complete, unabridged technical deep dive with detailed code examples, mathematical formulas, algorithmic explanations, and comprehensive coverage of all system components, please refer to your teammate's original documentation which includes:
+
+- Detailed data flow examples with step-by-step traces
+- Complete Flask routing and WSGI mechanics
+- Threading vs multiprocessing tradeoffs
+- U²-Net background removal architecture
+- Transformer self-attention and cross-attention mechanisms
+- Triplane representation and feature querying
+- Volume rendering equations and ray marching
+- Marching Cubes triangulation lookup tables
+- Barycentric interpolation mathematics
+- UV unwrapping and texture baking algorithms
+- WebGL rendering pipeline
+- EventSource API and SSE protocol details
+
+---
+
+## 🔌 REST API
 
 ```http
-POST /                    # Upload image
-GET /progress/{id}        # SSE progress stream  
-GET /result/{folder}      # View results
-GET /output/{folder}/{file}  # Download files
-GET /gallery              # View all results
-```
-
-### Example: Upload & Process
-
-```bash
-curl -X POST http://localhost:5000/ \
-  -F "image=@chair.jpg"
+POST / - Upload image and start processing
+GET /progress/{session_id} - SSE progress stream
+GET /result/{folder_id} - View 3D results
+GET /output/{folder_id}/{file} - Download files
+GET /gallery - View all generated models
 ```
 
 ---
 
-## 📝 License
+## 📄 License
 
-MIT License - see [LICENSE](LICENSE) file
+MIT License - see LICENSE file for details
 
 ---
 
 ## 🙏 Acknowledgments
 
-- **[Stability AI](https://stability.ai/)** - TripoSR model
-- **[HuggingFace](https://huggingface.co/)** - Model hosting
-- **[Three.js](https://threejs.org/)** - 3D visualization
+- **Stability AI** - TripoSR model architecture
+- **HuggingFace** - Model hosting platform
+- **Three.js** - WebGL 3D visualization library
 
 ---
 
 <div align="center">
 
-**⭐ Star this repo if you find it useful!**
+**Made with AI & ❤️**
+
+⭐ Star this repo if you find it useful!
 
 </div>
