@@ -141,8 +141,8 @@ def process_image_async(upload_path, session_id):
         # Render video
         timer.start("Rendering")
         timer.log_progress("🎬 Starting 3D rendering process...")
-        timer.log_progress("📹 Rendering 30 camera views...")
-        render_images = model.render(scene_codes, n_views=30, return_type="pil")
+        timer.log_progress("📹 Rendering 60 camera views for higher quality...")
+        render_images = model.render(scene_codes, n_views=60, return_type="pil")
         
         timer.log_progress("🎞️ Creating MP4 video...")
         save_video(render_images[0], os.path.join(image_dir, "render.mp4"), fps=30)
@@ -150,36 +150,68 @@ def process_image_async(upload_path, session_id):
         timer.log_progress("🖼️ Saving individual frames...")
         for ri, render_image in enumerate(render_images[0]):
             render_image.save(os.path.join(image_dir, f"render_{ri:03d}.png"))
-            if ri % 10 == 0:  # Update every 10 frames
-                timer.log_progress(f"📸 Saved frame {ri+1}/30")
+            if ri % 20 == 0:  # Update every 20 frames
+                timer.log_progress(f"📸 Saved frame {ri+1}/60")
         timer.end("Rendering")
 
         # Export mesh
         timer.start("Exporting mesh")
-        timer.log_progress("🏗️ Extracting 3D mesh geometry...")
-        meshes = model.extract_mesh(scene_codes, has_vertex_color=False)
+        timer.log_progress("🏗️ Extracting high-resolution 3D mesh (512³ grid)...")
+        meshes = model.extract_mesh(scene_codes, resolution=512, has_vertex_color=True)
+        mesh = meshes[0]
+        
+        # Bake vertex colors to texture
+        timer.log_progress("🎨 Baking vertex colors into UV texture map...")
+        try:
+            mesh.visual = mesh.visual.to_texture()
+            timer.log_progress("✨ Texture baking completed")
+        except Exception as e:
+            timer.log_progress(f"⚠️ Texture baking skipped: {str(e)}")
+        
+        # Export OBJ with texture
         mesh_file = os.path.join(image_dir, "mesh.obj")
-        meshes[0].export(mesh_file)
+        timer.log_progress("📦 Exporting OBJ with texture and MTL...")
+        
+        # Export using trimesh OBJ exporter with texture support
+        from trimesh.exchange import obj as obj_io
+        obj_text, texture_data = obj_io.export_obj(
+            mesh,
+            include_texture=True,
+            return_texture=True
+        )
+        
+        # Write OBJ file
+        with open(mesh_file, 'w') as f:
+            f.write(obj_text)
+        
+        # Write MTL and texture if available
+        if texture_data and hasattr(mesh.visual, 'material'):
+            mtl_file = os.path.join(image_dir, "mesh.mtl")
+            texture_file = os.path.join(image_dir, "mesh_texture.png")
+            
+            # Save texture image
+            if hasattr(mesh.visual, 'image') and mesh.visual.image is not None:
+                mesh.visual.image.save(texture_file)
+                timer.log_progress("🖼️ Texture map saved (1024×1024)")
+        
         timer.log_progress("📦 OBJ file exported successfully")
 
         # Convert to STL using trimesh
         stl_file = os.path.join(image_dir, "mesh.stl")
         try:
-            timer.log_progress("🔄 Converting to STL format...")
-            # Load the OBJ file with trimesh
-            mesh_trimesh = trimesh.load(mesh_file)
-            # Export as STL
-            mesh_trimesh.export(stl_file)
+            timer.log_progress("\ud83d\udd04 Converting to STL format...")
+            # Export the mesh directly as STL
+            mesh.export(stl_file)
             
             # Verify the STL file was created and has content
             if os.path.exists(stl_file) and os.path.getsize(stl_file) > 0:
                 file_size = os.path.getsize(stl_file)
-                timer.log_progress(f"✅ STL file created successfully ({file_size:,} bytes)")
+                timer.log_progress(f"\u2705 STL file created successfully ({file_size:,} bytes)")
             else:
-                timer.log_progress("⚠️ STL file creation failed - file is empty or missing")
+                timer.log_progress("\u26a0\ufe0f STL file creation failed - file is empty or missing")
         except Exception as e:
-            timer.log_progress(f"⚠️ STL conversion failed: {str(e)}")
-            print(f"⚠️ STL conversion failed: {e}")
+            timer.log_progress(f"\u26a0\ufe0f STL conversion failed: {str(e)}")
+            print(f"\u26a0\ufe0f STL conversion failed: {e}")
         timer.end("Exporting mesh")
 
         # Mark as completed
