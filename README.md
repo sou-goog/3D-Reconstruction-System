@@ -1,176 +1,56 @@
-<div align="center">
-
-# 🎨 TripoSR 3D Reconstruction
-
-### Transform 2D Images into Interactive 3D Models with AI
+# AI-Powered 3D Reconstruction System
+## Cross-Platform Single-Image 3D Object Reconstruction Using LRM and TripoSR
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![Flask](https://img.shields.io/badge/Flask-3.0+-green.svg)](https://flask.palletsprojects.com/)
 
-[Demo](#-demo) • [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [API](#-api) • [Documentation](#-documentation)
+---
 
-<img src="https://raw.githubusercontent.com/sou-goog/AI-Powered-3D-Reconstruction-System/main/figures/banner.png" alt="3D Reconstruction Demo" width="800"/>
+## 📋 Quick Navigation
 
-</div>
+- [Overview](#-overview)
+- [Features](#-features)  
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Complete Deep Dive](#complete-deep-dive-3d-reconstruction-system)
+  - [Part 1: System Architecture](#part-1-system-architecture--core-technologies)
+  - [Part 2: Flask Application](#part-2-flask-application-deep-dive)
+  - [Part 3: Background Processing](#part-3-background-processing--ai-pipeline)
+  - [Part 4: 3D Viewer & API](#part-4-server-sent-events-3d-viewer--api-architecture)
 
 ---
 
-## 🚀 Overview
+## 🎯 Overview
 
-**TripoSR 3D Reconstruction** is a powerful AI-powered system that converts single 2D images into fully-formed 3D models. Built on Stability AI's TripoSR architecture, it combines cutting-edge deep learning with real-time web visualization to deliver production-ready 3D assets.
+This is an **AI-powered 3D reconstruction application** that converts a single 2D image into a complete 3D model using deep learning, computer vision, and 3D graphics rendering.
 
-### What You Get
+**Input:** Single 2D photo (e.g., chair.jpg)
 
-From a single photograph, generate:
-
-| Output | Description |
-|--------|-------------|
-| **🎨 Textured 3D Model** | Complete OBJ file with UV-mapped textures |
-| **🖨️ 3D Print Ready** | STL format optimized for manufacturing |
-| **🎬 360° Video** | MP4 rotation animation (30 FPS) |
-| **🖼️ Render Frames** | 30 individual PNG frames from multiple angles |
-| **💻 Web Viewer** | Interactive Three.js visualization |
+**Output:**
+- `mesh.obj` - 3D geometry file
+- `mesh.stl` - 3D printing format
+- `mesh.mtl` - Material definition
+- `mesh_texture.png` - Texture map
+- `render.mp4` - 360° rotation video
+- 30 individual render frames
 
 ---
 
 ## ✨ Features
 
-<table>
-<tr>
-<td width="50%">
-
-### 🤖 AI-Powered
-- **TripoSR Neural Network** - Transformer-based architecture
-- **Automatic Background Removal** - U²-Net segmentation
-- **Smart Preprocessing** - Intelligent image optimization
-- **GPU Accelerated** - CUDA support for 10x speedup
-
-</td>
-<td width="50%">
-
-### 🎯 Production Ready
-- **Multiple Export Formats** - OBJ, STL, MTL, PNG
-- **High-Quality Textures** - 1024×1024 UV-mapped textures
-- **Real-time Progress** - Server-Sent Events streaming
-- **REST API** - Full programmatic access
-
-</td>
-</tr>
-</table>
-
----
-
-## 📸 Demo
-
-<div align="center">
-
-### Input → Processing → Output
-
-<table>
-<tr>
-<td align="center" width="33%">
-<img src="https://via.placeholder.com/300x300/4A90E2/FFFFFF?text=Input+Image" alt="Input" width="250"/>
-<br><b>1. Upload Image</b>
-<br>Any JPG/PNG
-</td>
-<td align="center" width="33%">
-<img src="https://via.placeholder.com/300x300/7B68EE/FFFFFF?text=AI+Processing" alt="Processing" width="250"/>
-<br><b>2. AI Processing</b>
-<br>10-30 seconds
-</td>
-<td align="center" width="33%">
-<img src="https://via.placeholder.com/300x300/50C878/FFFFFF?text=3D+Model" alt="Output" width="250"/>
-<br><b>3. 3D Model</b>
-<br>Ready to use
-</td>
-</tr>
-</table>
-
-</div>
-
----
-
-## 🏗️ Architecture
-
-```mermaid
-graph TB
-    A[Web Browser] -->|Upload Image| B[Flask Server]
-    B -->|Preprocess| C[Background Removal]
-    C -->|512×512| D[TripoSR Model]
-    D -->|Scene Codes| E[3D Renderer]
-    E -->|30 Views| F[Mesh Extraction]
-    F -->|Marching Cubes| G[Texture Baking]
-    G -->|Export| H[OBJ/STL/MTL/MP4]
-    H -->|Display| I[Three.js Viewer]
-```
-
-### Technology Stack
-
-<table>
-<tr>
-<td><b>Backend</b></td>
-<td>
-<code>Flask</code> • 
-<code>PyTorch</code> • 
-<code>NumPy</code> • 
-<code>Trimesh</code> • 
-<code>Rembg</code> • 
-<code>Pillow</code>
-</td>
-</tr>
-<tr>
-<td><b>AI Model</b></td>
-<td>
-<code>TripoSR</code> • 
-<code>U²-Net</code> • 
-<code>Transformer</code> • 
-<code>NeRF-style Rendering</code>
-</td>
-</tr>
-<tr>
-<td><b>Frontend</b></td>
-<td>
-<code>Three.js</code> • 
-<code>Bootstrap 5</code> • 
-<code>Font Awesome</code> • 
-<code>WebGL</code>
-</td>
-</tr>
-<tr>
-<td><b>Formats</b></td>
-<td>
-<code>OBJ</code> • 
-<code>STL</code> • 
-<code>MTL</code> • 
-<code>PNG</code> • 
-<code>MP4</code>
-</td>
-</tr>
-</table>
-
----
-
-## ⚡ Performance
-
-<div align="center">
-
-| Stage | GPU (RTX 3090) | CPU (16-core) | Memory |
-|-------|----------------|---------------|--------|
-| **Background Removal** | 1-2s | 3-5s | 500 MB |
-| **AI Inference** | 2-5s | 20-40s | 2 GB |
-| **3D Rendering** | 3-8s | 30-60s | 1 GB |
-| **Mesh Extraction** | 2-4s | 5-10s | 500 MB |
-| **Total Pipeline** | **10-30s** | **60-120s** | **4-5 GB** |
-
-</div>
+- 🤖 **AI-Powered** - TripoSR transformer-based neural network
+- 🎨 **Auto Background Removal** - U²-Net segmentation
+- 📹 **360° Video** - Automatic rotation animation
+- 🖼️ **Interactive Viewer** - WebGL-based 3D visualization
+- 📦 **Multiple Formats** - OBJ, STL, MTL exports
+- ⚡ **GPU Accelerated** - CUDA support for 10x speedup
+- 🔄 **Real-time Progress** - Server-Sent Events streaming
 
 ---
 
 ## 📦 Installation
-
-### Quick Start
 
 ```bash
 # Clone repository
@@ -184,341 +64,299 @@ pip install -r requirements.txt
 python app.py
 ```
 
-### Docker (Recommended)
-
-```bash
-docker build -t triposr-3d .
-docker run -p 5000:5000 --gpus all triposr-3d
-```
-
-### System Requirements
-
-<table>
-<tr>
-<td width="50%">
-
-**Minimum**
-- Python 3.8+
-- 8 GB RAM
-- 10 GB disk space
-- CPU with 4+ cores
-
-</td>
-<td width="50%">
-
-**Recommended**
-- Python 3.10+
-- 16 GB RAM
-- 20 GB disk space
-- NVIDIA GPU (8+ GB VRAM)
-- CUDA 11.8+
-
-</td>
-</tr>
-</table>
+**Access:** `http://localhost:5000`
 
 ---
 
 ## 🎮 Usage
 
 ### Web Interface
-
-1. **Start the server:**
-```bash
-python app.py
-```
-
-2. **Open browser:**
-```
-http://localhost:5000
-```
-
-3. **Upload & Generate:**
-   - Drag & drop your image
-   - Watch real-time progress
-   - Download 3D files
+1. Upload image (drag & drop or browse)
+2. Watch real-time progress updates
+3. View interactive 3D model
+4. Download files (OBJ/STL/MP4)
 
 ### Command Line
-
 ```bash
-python run.py input.jpg --output ./output --device cuda
-```
-
-**Options:**
-```
---device       GPU device (cuda/cpu)
---output       Output directory
---no-bg-remove Skip background removal
---resolution   Grid resolution (default: 256)
+python run.py input.jpg --device cuda --output ./output
 ```
 
 ### Python API
-
 ```python
 from tsr.system import TSR
-from PIL import Image
-
-# Load model
 model = TSR.from_pretrained("stabilityai/TripoSR")
-model.to("cuda")
-
-# Process image
-image = Image.open("input.jpg")
-scene_codes = model([image], device="cuda")
-
-# Extract mesh
 mesh = model.extract_mesh(scene_codes)[0]
-mesh.export("output.obj")
 ```
 
 ---
 
-## 🔌 REST API
+# Complete Deep Dive: 3D Reconstruction System
 
-### Upload & Process
+## Part 1: System Architecture & Core Technologies
 
-```http
-POST /
-Content-Type: multipart/form-data
+---
 
-{
-  "image": <file>
-}
+### 1.1 What This System Does
+
+This is an **AI-powered 3D reconstruction application** that converts a single 2D image into a complete 3D model. The system uses:
+- Deep learning (neural networks)
+- Computer vision
+- 3D graphics rendering
+- Web technologies
+
+**Input:** A single 2D photo (e.g., chair.jpg)
+
+**Output:**
+- `mesh.obj` - 3D geometry file (OBJ format)
+- `mesh.stl` - 3D printing format (STL format)
+- `mesh.mtl` - Material definition file
+- `mesh_texture.png` - Texture/color map
+- `render.mp4` - 360° rotation video
+- `render_000.png` to `render_029.png` - 30 individual frames
+- Interactive WebGL viewer in browser
+
+---
+
+### 1.2 High-Level Architecture
+
 ```
-
-### Progress Stream (SSE)
-
-```http
-GET /progress/{session_id}
-Accept: text/event-stream
-```
-
-**Response:**
-```javascript
-data: {"message": "🎭 Removing background...", "timestamp": "12:34:56"}
-data: {"message": "🧠 Running AI model...", "step": 2, "total": 5}
-data: {"status": "complete", "folder_id": "1234567890"}
-```
-
-### Download Files
-
-```http
-GET /output/{folder_id}/mesh.obj
-GET /output/{folder_id}/mesh.stl
-GET /output/{folder_id}/mesh_texture.png
-GET /output/{folder_id}/render.mp4
+┌─────────────────────────────────────────────────────────────┐
+│                     USER INTERFACE                          │
+│  (Web Browser - HTML/CSS/JavaScript + Three.js)             │
+└───────────────────────┬─────────────────────────────────────┘
+                        │
+                        │ HTTP Requests
+                        ▼
+┌─────────────────────────────────────────────────────────────┐
+│               FLASK WEB SERVER (app.py)                     │
+│  • Routing: Maps URLs to functions                          │
+│  • Session Management: Tracks users                         │
+│  • File Handling: Upload/Download                           │
+│  • Background Threading: Non-blocking processing            │
+└───────────────────────┬─────────────────────────────────────┘
+                        │
+                        │ Function Calls
+                        ▼
+┌─────────────────────────────────────────────────────────────┐
+│           IMAGE PREPROCESSING PIPELINE                      │
+│  • Background Removal (rembg library)                       │
+│  • Resize to 512×512 (PIL library)                          │
+│  • RGBA → RGB conversion (NumPy)                            │
+│  • Image normalization                                      │
+└───────────────────────┬─────────────────────────────────────┘
+                        │
+                        │ Preprocessed Image
+                        ▼
+┌─────────────────────────────────────────────────────────────┐
+│            TSR AI MODEL (tsr/system.py)                     │
+│  • Neural Network: TripoSR (Transformer-based)              │
+│  • Framework: PyTorch                                       │
+│  • Input: 2D image tensor                                   │
+│  • Output: 3D scene codes (latent representation)           │
+└───────────────────────┬─────────────────────────────────────┘
+                        │
+                        │ 3D Scene Codes
+                        ▼
+┌─────────────────────────────────────────────────────────────┐
+│              3D RENDERING ENGINE                            │
+│  • Render 30 views from different camera angles             │
+│  • Use scene codes to generate images                       │
+│  • Create rotation video                                    │
+└───────────────────────┬─────────────────────────────────────┘
+                        │
+                        │ Rendered Images
+                        ▼
+┌─────────────────────────────────────────────────────────────┐
+│              MESH EXTRACTION                                │
+│  • Marching Cubes Algorithm (extracts surface)              │
+│  • Generate vertices and faces                              │
+│  • Extract vertex colors                                    │
+└───────────────────────┬─────────────────────────────────────┘
+                        │
+                        │ 3D Mesh Data
+                        ▼
+┌─────────────────────────────────────────────────────────────┐
+│           EXPORT & TEXTURE BAKING (trimesh)                 │
+│  • OBJ Export: Geometry + normals                           │
+│  • STL Export: For 3D printing                              │
+│  • Texture Baking: Vertex colors → UV texture map           │
+│  • MTL Generation: Material definition                      │
+└───────────────────────┬─────────────────────────────────────┘
+                        │
+                        │ Output Files
+                        ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   FILE STORAGE                              │
+│  output/{timestamp}/                                        │
+│    ├── input.png                                            │
+│    ├── mesh.obj                                             │
+│    ├── mesh.stl                                             │
+│    ├── mesh.mtl                                             │
+│    ├── mesh_texture.png                                     │
+│    ├── render_000.png ... render_029.png                    │
+│    └── render.mp4                                           │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📊 Model Details
+### 1.3 Complete Technology Stack
 
-### TripoSR Architecture
+#### **1.3.1 Backend (Python)**
 
-```
-Input Image (512×512×3)
-    ↓
-Image Tokenizer (CNN + ResBlocks)
-    ↓
-Transformer Backbone (12 layers)
-    ├─ Self-Attention
-    └─ Cross-Attention with Image
-    ↓
-TriPlane Decoder (3×256×256×64)
-    ├─ XY Plane
-    ├─ XZ Plane  
-    └─ YZ Plane
-    ↓
-Volume Rendering (NeRF-style)
-    ↓
-3D Mesh Output
-```
+| Library | Version | Purpose | Deep Explanation |
+|---------|---------|---------|------------------|
+| **Flask** | 3.0.0 | Web Framework | Lightweight WSGI web application framework. Handles HTTP requests/responses, routing, templating. WSGI = Web Server Gateway Interface (Python standard for web apps). |
+| **PyTorch** | Latest | Deep Learning | Facebook's machine learning library. Provides tensor operations, automatic differentiation (autograd), GPU acceleration via CUDA. Used to run the TripoSR neural network. |
+| **rembg** | Latest | Background Removal | Uses U²-Net neural network (trained on 15k images) to segment foreground/background. Returns RGBA image with transparent background. |
+| **PIL (Pillow)** | Latest | Image Processing | Python Imaging Library. Loads/saves images, resize, format conversion (PNG/JPG/etc), color space operations (RGB/RGBA), image filtering. |
+| **NumPy** | Latest | Array Operations | Numerical Python. Provides N-dimensional arrays, mathematical operations, broadcasting. Used for image arrays (H×W×C), matrix math, vectorized operations. |
+| **trimesh** | 4.0.5+ | 3D Mesh Processing | Loads/saves 3D files (OBJ/STL/PLY), mesh operations (repair, simplify), ray tracing, texture baking via ColorVisuals.to_texture(). |
+| **imageio-ffmpeg** | Latest | Video Encoding | Python wrapper for FFmpeg. Converts image sequences to MP4/AVI. Uses H.264 codec for web-compatible videos. |
+| **flask-cors** | Latest | CORS Headers | Cross-Origin Resource Sharing. Allows requests from different domains (needed for Android app API calls). Adds `Access-Control-Allow-Origin` headers. |
 
-**Key Features:**
-- **Training Data:** 800k+ objects from Objaverse
-- **Architecture:** Transformer-based triplane representation
-- **Rendering:** NeRF-inspired volume rendering
-- **Mesh Extraction:** Marching Cubes algorithm
+#### **1.3.2 AI Model Architecture**
+
+**TripoSR** (Stability AI):
+- **Type:** Transformer-based 3D reconstruction
+- **Input:** Single RGB image (512×512)
+- **Output:** 3D triplane representation (3 feature planes)
+- **Training Data:** Objaverse dataset (800k+ 3D models)
 - **Model Size:** ~1.5 GB
+- **Inference Time:** ~10-30 seconds on GPU, 60-120 seconds on CPU
+
+**Components:**
+1. **Image Tokenizer:** Converts image to tokens (like words in NLP)
+2. **Transformer Backbone:** Processes tokens, learns 3D structure
+3. **TriPlane Decoder:** Converts tokens to 3 orthogonal feature planes
+4. **NeRF-like Renderer:** Queries triplanes to render novel views
+5. **Marching Cubes:** Extracts mesh surface from density field
+
+#### **1.3.3 Frontend (JavaScript)**
+
+| Library | Version | Purpose | Deep Explanation |
+|---------|---------|---------|------------------|
+| **Three.js** | 0.155.0 | 3D Graphics | WebGL wrapper. Provides scene graph, cameras, lights, materials, geometries. Abstracts raw WebGL API. Uses GPU for real-time rendering. |
+| **OBJLoader** | Three.js addon | OBJ Parser | Parses Wavefront OBJ file format. Reads vertices (`v`), normals (`vn`), texture coords (`vt`), faces (`f`). Creates Three.js geometry. |
+| **MTLLoader** | Three.js addon | Material Parser | Parses MTL (Material Template Library). Reads ambient (Ka), diffuse (Kd), specular (Ks), texture maps (map_Kd). Creates Three.js materials. |
+| **OrbitControls** | Three.js addon | Camera Control | Mouse/touch controls for 3D camera. Left-drag = rotate, right-drag = pan, scroll = zoom. Uses spherical coordinates. Auto-rotation support. |
+| **Bootstrap** | 5.3.0 | UI Framework | CSS framework with grid system, components (buttons, cards, modals), responsive design, utility classes. |
+| **Font Awesome** | 6.4.0 | Icon Library | Vector icons (SVG/font). Used for UI icons (download, rotate, wireframe, etc). Scalable and customizable. |
 
 ---
 
-## 📁 Output Format
+### 1.4 System Requirements
 
-Each processed image generates a folder with:
+**Minimum:**
+- Python 3.8+
+- 8 GB RAM
+- 10 GB disk space
+- CPU: 4 cores
 
-```
-output/
-└── 1234567890/
-    ├── input.png              # Preprocessed input (512×512)
-    ├── mesh.obj               # 3D geometry with UV mapping
-    ├── mesh.stl               # 3D printing format
-    ├── mesh.mtl               # Material definition
-    ├── mesh_texture.png       # Color texture (1024×1024)
-    ├── render.mp4             # 360° rotation video
-    └── render_000-029.png     # Individual render frames
-```
+**Recommended:**
+- Python 3.10+
+- 16 GB RAM
+- 20 GB disk space
+- NVIDIA GPU with 8+ GB VRAM
+- CUDA 11.8+
+
+**Browser:**
+- Modern browser with WebGL 2.0 support
+- Chrome 90+, Firefox 88+, Safari 15+
 
 ---
 
-## 🛠️ Advanced Configuration
+### 1.5 Performance Metrics
 
-### Custom Model Parameters
+| Operation | Time (GPU) | Time (CPU) | Memory |
+|-----------|-----------|-----------|--------|
+| Model Loading | 5-10 sec | 5-10 sec | 1.5 GB |
+| Background Removal | 1-2 sec | 3-5 sec | 500 MB |
+| Scene Code Generation | 2-5 sec | 20-40 sec | 2 GB |
+| Rendering 30 Views | 3-8 sec | 30-60 sec | 1 GB |
+| Mesh Extraction | 2-4 sec | 5-10 sec | 500 MB |
+| Texture Baking | 1-2 sec | 1-2 sec | 200 MB |
+| **Total** | **10-30 sec** | **60-120 sec** | **4-5 GB peak** |
 
-```python
-# Adjust rendering quality
-model.renderer.set_chunk_size(8192)  # GPU memory vs quality
+---
 
-# Mesh resolution
-mesh = model.extract_mesh(
-    scene_codes,
-    resolution=256,      # 128/256/512
-    threshold=0.0,       # Surface threshold
-    has_vertex_color=True
-)
+## Part 2: Flask Application Deep Dive
+
+This section covers the Flask web framework fundamentals and how the application handles HTTP requests, manages sessions, and coordinates background processing.
+
+### Key Concepts
+- WSGI (Web Server Gateway Interface)
+- Request/Response handling
+- Session management with encrypted cookies
+- Background threading for non-blocking processing
+- Server-Sent Events (SSE) for real-time updates
+
+---
+
+## Part 3: Background Processing & AI Pipeline
+
+This section details the complete image processing pipeline from upload to 3D model generation.
+
+### Pipeline Stages
+1. **Image Loading & Preprocessing** - Resize to 512×512
+2. **Background Removal** - U²-Net neural network
+3. **AI Model Inference** - TripoSR transformer
+4. **3D Rendering** - NeRF-style volume rendering
+5. **Mesh Extraction** - Marching Cubes algorithm (256³ grid)
+6. **Texture Baking** - UV unwrapping with xatlas
+7. **File Export** - OBJ, STL, MTL, PNG, MP4
+
+---
+
+## Part 4: Server-Sent Events, 3D Viewer & API Architecture
+
+This section covers real-time communication and 3D visualization.
+
+### Technologies
+- **Server-Sent Events (SSE)** - One-way server→client streaming
+- **Three.js** - WebGL-based 3D rendering
+- **OrbitControls** - Interactive camera manipulation
+- **REST API** - Programmatic access to all features
+
+---
+
+## 🔌 API Reference
+
+### Endpoints
+
+```http
+POST /                    # Upload image
+GET /progress/{id}        # SSE progress stream  
+GET /result/{folder}      # View results
+GET /output/{folder}/{file}  # Download files
+GET /gallery              # View all results
 ```
 
-### Environment Variables
+### Example: Upload & Process
 
 ```bash
-export CUDA_VISIBLE_DEVICES=0        # Select GPU
-export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
-export FLASK_ENV=production
+curl -X POST http://localhost:5000/ \
+  -F "image=@chair.jpg"
 ```
 
 ---
 
-## 📚 Documentation
+## 📝 License
 
-- **[Architecture Deep Dive](./docs/ARCHITECTURE.md)** - Detailed system design
-- **[API Reference](./docs/API.md)** - Complete API documentation  
-- **[Model Guide](./docs/MODEL.md)** - TripoSR model internals
-- **[Deployment](./docs/DEPLOYMENT.md)** - Production deployment guide
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Development Setup
-
-```bash
-# Install dev dependencies
-pip install -r requirements-dev.txt
-
-# Run tests
-pytest tests/
-
-# Format code
-black .
-isort .
-```
-
----
-
-## 🐛 Troubleshooting
-
-<details>
-<summary><b>CUDA Out of Memory</b></summary>
-
-```python
-# Reduce chunk size
-model.renderer.set_chunk_size(4096)  # Default: 8192
-
-# Or use CPU
-model.to("cpu")
-```
-</details>
-
-<details>
-<summary><b>Background Removal Slow</b></summary>
-
-```bash
-# Download U²-Net model manually
-wget https://github.com/danielgatis/rembg/releases/download/v0.0.0/u2net.onnx
-mkdir -p ~/.u2net
-mv u2net.onnx ~/.u2net/
-```
-</details>
-
-<details>
-<summary><b>Port Already in Use</b></summary>
-
-```bash
-# Change port
-python app.py --port 8000
-```
-</details>
-
----
-
-## 📈 Roadmap
-
-- [x] Basic 3D reconstruction
-- [x] Web interface
-- [x] Texture baking
-- [x] Multiple export formats
-- [x] Real-time progress updates
-- [ ] Batch processing
-- [ ] Multi-object scenes
-- [ ] PBR material export
-- [ ] Cloud deployment
-- [ ] Mobile app
-
----
-
-## 🌟 Showcase
-
-<div align="center">
-
-### Community Creations
-
-*Share your 3D reconstructions! Open an issue with the `showcase` label.*
-
-</div>
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-### Third-Party Licenses
-- **TripoSR Model:** [Stability AI License](https://github.com/Stability-AI/TripoSR)
-- **Three.js:** [MIT License](https://github.com/mrdoob/three.js/blob/dev/LICENSE)
+MIT License - see [LICENSE](LICENSE) file
 
 ---
 
 ## 🙏 Acknowledgments
 
-- **[Stability AI](https://stability.ai/)** - TripoSR model architecture
+- **[Stability AI](https://stability.ai/)** - TripoSR model
 - **[HuggingFace](https://huggingface.co/)** - Model hosting
 - **[Three.js](https://threejs.org/)** - 3D visualization
-- **[rembg](https://github.com/danielgatis/rembg)** - Background removal
-
----
-
-## 📞 Support
-
-- **Issues:** [GitHub Issues](https://github.com/sou-goog/AI-Powered-3D-Reconstruction-System/issues)
-- **Discussions:** [GitHub Discussions](https://github.com/sou-goog/AI-Powered-3D-Reconstruction-System/discussions)
-- **Email:** [support@example.com](mailto:support@example.com)
 
 ---
 
 <div align="center">
 
-### 🎯 Made with AI & ❤️
-
-**[⭐ Star this repo](https://github.com/sou-goog/AI-Powered-3D-Reconstruction-System)** if you find it useful!
-
-[Website](https://example.com) • [Documentation](https://docs.example.com) • [Blog](https://blog.example.com)
+**⭐ Star this repo if you find it useful!**
 
 </div>
