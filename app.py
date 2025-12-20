@@ -37,7 +37,7 @@ model = TSR.from_pretrained(
     config_name="config.yaml",
     weight_name="model.ckpt",
 )
-model.renderer.set_chunk_size(8192)
+model.renderer.set_chunk_size(131072)  # Larger chunks = faster rendering
 model.to(device)
 print("Model loaded.")
 
@@ -138,26 +138,21 @@ def process_image_async(upload_path, session_id):
         timer.log_progress("🎯 3D scene generation completed!")
         timer.end("Running model")
 
-        # Render video
+        # Render video (optimized for speed)
         timer.start("Rendering")
         timer.log_progress("🎬 Starting 3D rendering process...")
-        timer.log_progress("📹 Rendering 30 camera views...")
-        render_images = model.render(scene_codes, n_views=30, return_type="pil")
+        timer.log_progress("📹 Rendering 12 camera views (optimized for speed)...")
+        render_images = model.render(scene_codes, n_views=12, return_type="pil")
         
         timer.log_progress("🎞️ Creating MP4 video...")
-        save_video(render_images[0], os.path.join(image_dir, "render.mp4"), fps=30)
-        
-        timer.log_progress("🖼️ Saving individual frames...")
-        for ri, render_image in enumerate(render_images[0]):
-            render_image.save(os.path.join(image_dir, f"render_{ri:03d}.png"))
-            if ri % 10 == 0:  # Update every 10 frames
-                timer.log_progress(f"📸 Saved frame {ri+1}/30")
+        save_video(render_images[0], os.path.join(image_dir, "render.mp4"), fps=12)
+        timer.log_progress("✅ Video created successfully")
         timer.end("Rendering")
 
         # Export mesh
         timer.start("Exporting mesh")
         timer.log_progress("🏗️ Extracting 3D mesh geometry...")
-        meshes = model.extract_mesh(scene_codes, has_vertex_color=False)
+        meshes = model.extract_mesh(scene_codes, resolution=128, has_vertex_color=False)  # Faster with 128
         mesh_file = os.path.join(image_dir, "mesh.obj")
         meshes[0].export(mesh_file)
         timer.log_progress("📦 OBJ file exported successfully")
