@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link
-        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@300;400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <style>
         * {
@@ -18,161 +18,210 @@
         }
 
         :root {
-            --primary-gradient: linear-gradient(135deg, #06b6d4 0%, #10b981 100%);
-            --secondary-cyan: rgba(6, 182, 212, 0.4);
+            --primary: #06b6d4;
+            --secondary: #10b981;
+            --accent: #3b82f6;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            line-height: 1.6;
-            background: #0f172a;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             min-height: 100vh;
-            overflow-x: hidden;
             position: relative;
+            overflow-x: hidden;
         }
 
-        /* Calm background */
-        body::before {
+        /* Animated background orbs */
+        body::before,
+        body::after {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(circle at 15% 20%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 85% 80%, rgba(16, 185, 129, 0.12) 0%, transparent 50%);
-            animation: bgPulse 15s ease-in-out infinite;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: float 20s ease-in-out infinite;
             z-index: 0;
         }
 
-        @keyframes bgPulse {
+        body::before {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        body::after {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
 
             0%,
             100% {
-                opacity: 1;
-                transform: scale(1);
+                transform: translate(0, 0) scale(1);
             }
 
-            50% {
-                opacity: 0.8;
-                transform: scale(1.02);
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
             }
         }
 
         .container-main {
-            max-width: 850px;
-            margin: 60px auto;
+            max-width: 900px;
+            margin: 80px auto;
             position: relative;
             z-index: 1;
             padding: 0 24px;
         }
 
-        /* Quiet glass card */
+        /* Premium glass card */
         .glass-card {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 48px 40px;
+            background: linear-gradient(135deg,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 56px 48px;
             box-shadow:
-                0 10px 30px rgba(0, 0, 0, 0.3),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            transition: all 0.4s ease;
+                0 8px 32px 0 rgba(0, 0, 0, 0.37),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-8px);
             box-shadow:
-                0 15px 40px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+                0 16px 48px 0 rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
         }
 
         /* Header */
         .header-main {
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: 56px;
         }
 
         h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 700;
-            line-height: 1.2;
-            color: #e2e8f0;
-            margin-bottom: 16px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
         }
 
-        h1 span {
-            background: var(--primary-gradient);
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .subtitle {
-            font-size: 1.2rem;
-            color: #94a3b8;
+            font-size: 1.25rem;
+            color: #cbd5e1;
             font-weight: 400;
+            line-height: 1.6;
         }
 
         /* Upload Zone */
         .upload-zone {
             position: relative;
-            border: 2px dashed var(--secondary-cyan);
+            border: 2px dashed rgba(6, 182, 212, 0.3);
             border-radius: 24px;
-            padding: 60px 40px;
+            padding: 64px 48px;
             text-align: center;
-            background: rgba(6, 182, 212, 0.03);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg,
+                    rgba(6, 182, 212, 0.05) 0%,
+                    rgba(16, 185, 129, 0.05) 100%);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             margin-bottom: 32px;
             overflow: hidden;
         }
 
+        .upload-zone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center,
+                    rgba(6, 182, 212, 0.1) 0%,
+                    transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
         .upload-zone:hover {
-            transform: translateY(-4px) scale(1.01);
-            border-color: #10b981;
-            background: rgba(16, 185, 129, 0.05);
+            transform: translateY(-4px);
+            border-color: rgba(6, 182, 212, 0.6);
+            background: linear-gradient(135deg,
+                    rgba(6, 182, 212, 0.08) 0%,
+                    rgba(16, 185, 129, 0.08) 100%);
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.15);
+        }
+
+        .upload-zone:hover::before {
+            opacity: 1;
         }
 
         .upload-zone.dragover {
-            background: rgba(6, 182, 212, 0.1);
-            border-color: #06b6d4;
+            border-color: var(--primary);
+            background: rgba(6, 182, 212, 0.12);
             transform: scale(1.02);
-        }
-
-        .upload-zone.dragover .upload-icon {
-            transform: scale(1.1);
-        }
-
-        .upload-icon-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 24px;
         }
 
         .upload-icon {
             font-size: 5rem;
-            color: #06b6d4;
-            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 24px;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .upload-zone:hover .upload-icon {
+            transform: translateY(-4px);
+        }
+
+        .upload-zone.dragover .upload-icon {
+            transform: scale(1.15);
         }
 
         .upload-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.75rem;
+            font-size: 2rem;
             font-weight: 600;
-            color: #e2e8f0;
-            margin-bottom: 8px;
+            color: #f1f5f9;
+            margin-bottom: 12px;
             line-height: 1.2;
         }
 
         .upload-subtitle {
             color: #94a3b8;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 300;
-            opacity: 0.7;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .file-input {
@@ -187,40 +236,57 @@
 
         /* Browse Button */
         .btn-browse {
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            color: #94a3b8;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 12px 32px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 14px 36px;
             border-radius: 12px;
             font-weight: 500;
             font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .btn-browse:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: var(--secondary-cyan);
-            color: #e2e8f0;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(6, 182, 212, 0.5);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.2);
         }
 
         /* Preview */
         .preview-container {
-            margin: 24px 0;
+            margin: 28px 0;
             display: none;
+            animation: fadeIn 0.4s ease;
         }
 
         .preview-container.show {
             display: block;
         }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .preview-image-wrapper {
             position: relative;
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            max-width: 400px;
+            border: 2px solid rgba(6, 182, 212, 0.3);
+            max-width: 450px;
             margin: 0 auto;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         }
 
         .preview-image {
@@ -232,16 +298,19 @@
             position: absolute;
             top: 16px;
             right: 16px;
-            background: rgba(239, 68, 68, 0.9);
+            background: rgba(239, 68, 68, 0.95);
             backdrop-filter: blur(10px);
             color: white;
             border: none;
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1rem;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .remove-preview:hover {
@@ -252,23 +321,43 @@
         /* Generate Button */
         .btn-generate {
             width: 100%;
-            padding: 20px;
-            background: var(--primary-gradient);
+            padding: 22px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             color: white;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.3);
+            box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);
+            letter-spacing: 0.02em;
+        }
+
+        .btn-generate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-generate:hover:not(:disabled)::before {
+            left: 100%;
         }
 
         .btn-generate:hover:not(:disabled) {
-            transform: scale(1.02);
+            transform: translateY(-2px);
             box-shadow: 0 8px 30px rgba(6, 182, 212, 0.5);
+        }
+
+        .btn-generate:active:not(:disabled) {
+            transform: translateY(0);
         }
 
         .btn-generate:disabled {
@@ -284,78 +373,93 @@
 
         /* Features Section */
         .features {
-            margin-top: 48px;
-            padding-top: 32px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: 56px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .features-title {
             text-align: center;
-            color: #94a3b8;
-            font-size: 0.9rem;
+            color: #64748b;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 24px;
-            font-weight: 500;
+            letter-spacing: 2px;
+            margin-bottom: 32px;
+            font-weight: 600;
         }
 
         .features-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            gap: 32px;
         }
 
         .feature-item {
             text-align: center;
-            padding: 16px;
+            padding: 24px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(6, 182, 212, 0.3);
+            transform: translateY(-4px);
         }
 
         .feature-icon {
-            font-size: 2rem;
-            color: #06b6d4;
-            margin-bottom: 12px;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
         }
 
         .feature-text {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            font-weight: 400;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            font-weight: 500;
         }
 
         /* Gallery Link */
         .gallery-link {
             text-align: center;
-            margin-top: 32px;
+            margin-top: 40px;
         }
 
         .gallery-link a {
             color: #94a3b8;
             text-decoration: none;
-            font-weight: 400;
+            font-weight: 500;
             font-size: 0.95rem;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .gallery-link a:hover {
-            color: #06b6d4;
+            color: var(--primary);
             gap: 12px;
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.3);
         }
 
         /* Mobile */
         @media (max-width: 768px) {
-            body::before {
-                opacity: 0.4;
-            }
-
             .glass-card {
-                padding: 32px 24px;
+                padding: 40px 28px;
             }
 
             h1 {
-                font-size: 2.5rem;
+                font-size: 2.75rem;
             }
 
             .subtitle {
@@ -363,7 +467,11 @@
             }
 
             .upload-zone {
-                padding: 40px 24px;
+                padding: 48px 28px;
+            }
+
+            .upload-title {
+                font-size: 1.5rem;
             }
 
             .features-grid {
@@ -378,7 +486,7 @@
     <div class="container-main">
         <div class="glass-card">
             <div class="header-main">
-                <h1>3D Reconstruction <span>Studio</span></h1>
+                <h1>3D Reconstruction <span class="gradient-text">Studio</span></h1>
                 <p class="subtitle">Transform any image into a 3D model with AI</p>
             </div>
 
@@ -386,9 +494,7 @@
                 <div class="upload-zone" id="uploadArea">
                     <input type="file" name="file" id="fileInput" class="file-input" accept="image/*" required>
 
-                    <div class="upload-icon-wrapper">
-                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                    </div>
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
 
                     <div class="upload-title">Drop your image here</div>
                     <p class="upload-subtitle">or click to browse • JPG, PNG up to 10MB</p>
@@ -450,7 +556,6 @@
         const btnText = document.getElementById('btnText');
         const uploadForm = document.getElementById('uploadForm');
 
-        // Drag and drop
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             uploadArea.addEventListener(eventName, preventDefaults, false);
         });
@@ -479,7 +584,6 @@
             handleFileSelection();
         }, false);
 
-        // File selection
         fileInput.addEventListener('change', handleFileSelection);
 
         function handleFileSelection() {
@@ -502,7 +606,6 @@
             generateBtn.disabled = true;
         }
 
-        // Form submission with loading state
         uploadForm.addEventListener('submit', (e) => {
             btnText.textContent = 'Reconstructing geometry…';
             generateBtn.disabled = true;
