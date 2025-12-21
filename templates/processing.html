@@ -554,13 +554,13 @@
                         progressBar.style.width = percentage + '%';
                     }
 
-                    if (data.status === 'completed' && data.folder) {
+                    if (data.status === 'completed' && data.folder_id) {
                         setTimeout(() => {
                             statusText.textContent = 'Processing Complete!';
                             progressBar.style.width = '100%';
                             completeSection.classList.add('show');
                             // Auto redirect after short delay
-                            window.location.href = `/result/${data.folder}`;
+                            window.location.href = `/result/${data.folder_id}`;
                         }, 500);
                     }
 
