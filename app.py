@@ -87,17 +87,17 @@ def process_image_async(upload_path, session_id):
     timer = Timer(session_id)
     
     try:
-        timer.log_progress("📁 Processing uploaded image...")
+        timer.log_progress("📁 Processing uploaded image...", step=1, total_steps=10)
         
         # Open and resize
-        timer.log_progress("🖼️ Loading and resizing image...")
+        timer.log_progress("🖼️ Loading and resizing image...", step=2, total_steps=10)
         original_image = Image.open(upload_path)
         resized_image = original_image.resize((512, 512))
-        timer.log_progress(f"📐 Image resized to 512x512 pixels")
+        timer.log_progress(f"📐 Image resized to 512x512 pixels", step=2, total_steps=10)
 
         # TSR processing
         timer.start("Processing image")
-        timer.log_progress("🎭 Removing background...")
+        timer.log_progress("🎭 Removing background...", step=3, total_steps=10)
         rembg_session = rembg.new_session()
         image = remove_background(resized_image, rembg_session)
         timer.log_progress("✨ Background removed successfully")
@@ -131,27 +131,27 @@ def process_image_async(upload_path, session_id):
 
         # Run TSR model
         timer.start("Running model")
-        timer.log_progress("🧠 Initializing AI neural network...")
-        timer.log_progress("🔮 Generating 3D scene codes...")
+        timer.log_progress("🧠 Initializing AI neural network...", step=5, total_steps=10)
+        timer.log_progress("🔮 Generating 3D scene codes...", step=6, total_steps=10)
         with torch.no_grad():
             scene_codes = model([image], device=device)
-        timer.log_progress("🎯 3D scene generation completed!")
+        timer.log_progress("🎯 3D scene generation completed!", step=7, total_steps=10)
         timer.end("Running model")
 
         # Render video (optimized for speed)
         timer.start("Rendering")
-        timer.log_progress("🎬 Starting 3D rendering process...")
-        timer.log_progress("📹 Rendering 12 camera views (optimized for speed)...")
+        timer.log_progress("🎬 Starting 3D rendering process...", step=8, total_steps=10)
+        timer.log_progress("📹 Rendering 12 camera views (optimized for speed)...", step=8, total_steps=10)
         render_images = model.render(scene_codes, n_views=12, return_type="pil")
         
-        timer.log_progress("🎞️ Creating MP4 video...")
+        timer.log_progress("🎞️ Creating MP4 video...", step=9, total_steps=10)
         save_video(render_images[0], os.path.join(image_dir, "render.mp4"), fps=12)
-        timer.log_progress("✅ Video created successfully")
+        timer.log_progress("✅ Video created successfully", step=9, total_steps=10)
         timer.end("Rendering")
 
         # Export mesh
         timer.start("Exporting mesh")
-        timer.log_progress("🏗️ Extracting 3D mesh geometry...")
+        timer.log_progress("🏗️ Extracting 3D mesh geometry...", step=10, total_steps=10)
         meshes = model.extract_mesh(scene_codes, resolution=128, has_vertex_color=False)  # Faster with 128
         mesh_file = os.path.join(image_dir, "mesh.obj")
         meshes[0].export(mesh_file)
