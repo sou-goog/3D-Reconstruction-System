@@ -559,8 +559,8 @@
                             statusText.textContent = 'Processing Complete!';
                             progressBar.style.width = '100%';
                             completeSection.classList.add('show');
-                            viewResultBtn.href = `/result/${data.folder}`;
-                            eventSource.close();
+                            // Auto redirect after short delay
+                            window.location.href = `/result/${data.folder}`;
                         }, 500);
                     }
 
