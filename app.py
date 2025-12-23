@@ -90,11 +90,11 @@ def process_image_async(upload_path, session_id):
     try:
         timer.log_progress("📁 Processing uploaded image...", step=1, total_steps=10)
         
-        # Open and resize
-        timer.log_progress("🖼️ Loading and resizing image...", step=2, total_steps=10)
+        # Open and resize with high-quality filter
+        timer.log_progress("🖼️ Loading and optimizing image...", step=2, total_steps=10)
         original_image = Image.open(upload_path)
-        resized_image = original_image.resize((512, 512))
-        timer.log_progress(f"📐 Image resized to 512x512 pixels", step=2, total_steps=10)
+        resized_image = original_image.resize((512, 512), Image.LANCZOS)
+        timer.log_progress(f"📐 Image optimized to 512x512", step=2, total_steps=10)
 
         # TSR processing
         timer.start("Processing image")
@@ -103,8 +103,8 @@ def process_image_async(upload_path, session_id):
         image = remove_background(resized_image, rembg_session)
         timer.log_progress("✨ Background removed successfully")
         
-        timer.log_progress("🔄 Resizing foreground...")
-        image = resize_foreground(image, ratio=0.85)
+        timer.log_progress("🔄 Maximizing object scale...")
+        image = resize_foreground(image, ratio=0.95) # Increased from 0.85 for more detail
 
         if image.mode == "RGBA":
             timer.log_progress("🎨 Converting RGBA to RGB...")
@@ -152,9 +152,9 @@ def process_image_async(upload_path, session_id):
 
         # Export mesh
         timer.start("Exporting mesh")
-        timer.log_progress("🏗️ Extracting high-quality 3D mesh...", step=10, total_steps=10)
-        # Increased resolution to 256 for better detail and enabled vertex colors
-        meshes = model.extract_mesh(scene_codes, resolution=256, has_vertex_color=True)
+        timer.log_progress("🏗️ Extracting Ultra-HD 3D mesh...", step=10, total_steps=10)
+        # Increased resolution to 350 (Max safe limit) and enabled vertex colors
+        meshes = model.extract_mesh(scene_codes, resolution=350, has_vertex_color=True)
         mesh_file = os.path.join(image_dir, "mesh.obj")
         meshes[0].export(mesh_file)
         timer.log_progress("📦 OBJ file exported successfully")
